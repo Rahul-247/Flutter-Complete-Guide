@@ -10,7 +10,9 @@ class MyApp extends StatelessWidget {
           title: Text("First App"),
         ),
         body: Center(
-          child: Text("Hello! World", textAlign: TextAlign.center),
+          child: Text(
+            "Hello! World", 
+            ),
         ),
       ),
     );
