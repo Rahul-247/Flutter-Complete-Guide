@@ -1,6 +1,6 @@
-import 'package:Flutter_complete_Guide/answer.dart';
 import 'package:flutter/material.dart';
-import './question.dart';
+import 'quiz.dart';
+import 'result.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,7 +15,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
-  var questions = [
+  var _questions = [
     {
       'questionText': 'What\'s you favorite color?',
       'answers': ['Black', 'Red', 'Green', 'Black']
@@ -30,6 +30,12 @@ class _MyAppState extends State<MyApp> {
     },
   ];
 
+  void _resetQuiz() {
+    setState(() {
+      _questionIndex = 0;
+    });
+  }
+
   void _answerQuestion() {
     setState(() {
       _questionIndex += 1;
@@ -42,22 +48,28 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text("My First App"),
+          title: Text('Quiz App'),
+          actions: <Widget>[
+            FlatButton(
+              textColor: Colors.white,
+              onPressed: _resetQuiz,
+              child: Text(
+                'Reset',
+                style: TextStyle(fontSize: 18),
+              ),
+              shape: CircleBorder(
+                side: BorderSide(color: Colors.transparent),
+              ),
+            )
+          ],
         ),
         body: Center(
-          child: Column(
-            children: [
-              SizedBox(height: 50),
-              Question(
-                questions[_questionIndex]['questionText'],
-              ),
-              SizedBox(height: 50),
-              ...(questions[_questionIndex]['answers'] as List<String>)
-                  .map((answer) {
-                return Answer(_answerQuestion, answer);
-              }).toList()
-            ],
-          ),
+          child: (_questionIndex < _questions.length)
+              ? Quiz(
+                  answerQuestion: _answerQuestion,
+                  questionIndex: _questionIndex,
+                  questions: _questions)
+              : Result(),
         ),
       ),
     );
